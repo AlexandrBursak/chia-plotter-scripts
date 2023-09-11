@@ -7,7 +7,8 @@ fast_disk_dir="/mnt/Fast-disk/chia-plotter/plotting/"
 
 path_to_bladebit="/home/burik/plotter/bladebit_cuda/bladebit_cuda"
 
-number_threads=28
+# set all core/threads of processor
+number_threads=$(nproc --all)
 
 # Folders, where should be stored the plots
 path_array=("/mnt/InPl12Tb/12TbPlots" "/mnt/InPl14Tb-2/14TbPlots")
