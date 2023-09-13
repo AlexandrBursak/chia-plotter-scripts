@@ -36,22 +36,20 @@ action_on_plot=false
 while true; do
     # Search the files ".plot" in the temporary fast disk
     for file in "$source_dir"/*.plot; do
-
         if [ -e "$file" ]; then
             count=$((count + 1))
-
             start_time=$(date +%s)
 
             # Get the basename of file
             file_name=$(basename "$file")
-            # echo "Перевіряємо файл для переміщення $count: $file_name"
-            echo "Start checking file $count: $file_name"
+            echo "Cycle #$count; Start working with new plot: $file_name"
 
             # Create a log file
             logs_file="$path_logs/$file_name.log"
-            touch "$logs_file"
             echo "Create log file $logs_file"
+            touch "$logs_file"
 
+            echo "Start validation of plot"
             # Start the chia plot validation and store result to log file
             chia plots check -n $count_validation -g $file  > "$logs_file" 2>&1 &
 
@@ -78,7 +76,7 @@ while true; do
                         break
                     fi
                 done
-                echo "Move $source_dir/$file_name to $current_path/$file_name"
+                echo "Move $file_name to $current_path/$file_name"
                 action_on_plot=true
 
                 # Copy the file to the destination dir
@@ -89,15 +87,15 @@ while true; do
             rm $file
 
             if [[ "$action_on_plot" == true ]]; then
-              echo "Moved file $count: $file into $current_path."
+              echo "Moved file: $file into $current_path."
             else
-              echo "Removed file $count: $file, because $first_digit < $min_allowed_proofs."
+              echo "Removed file: $file, because $first_digit < $min_allowed_proofs."
             fi
 
             end_time=$(date +%s)
             elapsed_time=$((end_time - start_time))
 
-            echo "============= $first_digit_with_profs; FINISHED in $elapsed_time s.==============="
+            echo "========== #$count === $first_digit_with_profs; === FINISHED in $elapsed_time s.==============="
         fi
 
     done
