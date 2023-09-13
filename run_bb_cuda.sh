@@ -30,7 +30,7 @@ get_free_space() {
 
 plot_size=85195312 # for compress type 5
 
-number_plots=1 # number plats that we want to plot
+number_plots=100 # number plats that we want to plot
 compress=5 # compress level
 counter=1 
 stop_plotting=false # for breaking the loop if free space is not enough
@@ -49,12 +49,12 @@ do
         stop_plotting=true
     done
 
-    if [[ $stop_plotting ]]; then
+    if [[ "$stop_plotting" == true ]]; then
         echo "Not enough space for plotting"
         break
     fi
 
-	echo $counter
+    echo $counter
 
 # run the blidebit script
 $path_to_bladebit \
@@ -67,8 +67,8 @@ $path_to_bladebit \
     $fast_disk_dir \
     /
 
-	((counter++))
+    ((counter++))
 
-	sleep 10
+    sleep 10
 done
 echo All done
