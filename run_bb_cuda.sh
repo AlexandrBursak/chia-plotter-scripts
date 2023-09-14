@@ -11,7 +11,7 @@ path_to_bladebit="/home/burik/plotter/bladebit_cuda/bladebit_cuda"
 number_threads=$(nproc --all)
 
 # Folders, where should be stored the plots
-path_array=("/mnt/InPl12Tb/12TbPlots" "/mnt/InPl14Tb-2/14TbPlots")
+path_array=("/mnt/InPl12Tb/Plots" "/mnt/InPl14Tb-2/Plots")
 
 # Check for free space for plots
 get_free_space() {
@@ -30,8 +30,8 @@ get_free_space() {
 
 plot_size=85195312 # for compress type 5
 
-number_plots=100 # number plats that we want to plot
-compress=5 # compress level
+number_plots=200 # number plats that we want to plot
+compress=7 # compress level
 counter=1 
 stop_plotting=false # for breaking the loop if free space is not enough
 while [ $counter -le $number_plots ]

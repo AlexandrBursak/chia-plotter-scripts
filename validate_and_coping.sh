@@ -8,7 +8,7 @@ logs_file=""
 path_logs="validation_logs"
 
 # Folders, where should be stored the plots
-path_array=("/mnt/InPl12Tb/12TbPlots" "/mnt/InPl14Tb-2/14TbPlots")
+path_array=("/mnt/InPl12Tb/Plots" "/mnt/InPl14Tb-2/Plots")
 
 plot_size=85195312 # for compress type 5
 
@@ -35,7 +35,8 @@ count_total=0
 copied=0
 removed=0
 action_on_plot=false
-while true; do
+keep_going_proccessing=true
+while $keep_going_proccessing; do
     # Search the files ".plot" in the temporary fast disk
     for file in "$source_dir"/*.plot; do
         if [ -e "$file" ]; then
@@ -70,31 +71,40 @@ while true; do
             # if Proofs is less than required then the plot file doesn't copy to the final destination
             if [ $first_digit -lt $min_allowed_proofs ]; then
                 action_on_plot=false
+                keep_going_proccessing=true
             else
                 # Get the free space destination place
                 for current_path in ${path_array[@]}; do
                     get_free_space "$current_path"
                     if [[ $free_space -gt $plot_size ]]; then
                         echo "$free_space > $plot_size"
+                        keep_going_proccessing=true
                         break
+                    else
+                        keep_going_proccessing=false
                     fi
                 done
-                echo "Move $file_name to $current_path/$file_name"
-                action_on_plot=true
+                if [[ "$keep_going_proccessing" == true ]]; then
+                    echo "Move $file_name to $current_path/$file_name"
+                    action_on_plot=true
 
-                # Copy the file to the destination dir
-                pv "$source_dir/$file_name" > "$current_path/$file_name"
+                    # Copy the file to the destination dir
+                    pv "$source_dir/$file_name" > "$current_path/$file_name"
+                fi
             fi
 
-            # Remove the file from the temporary fast disk
-            rm $file
-
-            if [[ "$action_on_plot" == true ]]; then
-              echo "Moved file: $file into $current_path."
-              copied=$((copied + 1))
+            if [[ "$keep_going_proccessing" == true ]]; then
+                # Remove the file from the temporary fast disk
+                rm $file
+                if [[ "$action_on_plot" == true ]]; then
+                  echo "Moved file: $file into $current_path."
+                  copied=$((copied + 1))
+                else
+                  echo "Removed file: $file, because $first_digit < $min_allowed_proofs."
+                  removed=$((removed + 1))
+                fi
             else
-              echo "Removed file: $file, because $first_digit < $min_allowed_proofs."
-              removed=$((removed + 1))
+                echo "Not enough space for moving a plot"
             fi
 
             end_time=$(date +%s)
@@ -102,6 +112,10 @@ while true; do
 
             echo "Statistics: copied=$copied removed=$removed"
             echo "========== #$count_total === $first_digit_with_profs; === FINISHED in $elapsed_time s.==============="
+
+            if [[ "$keep_going_proccessing" == false ]]; then
+                break
+            fi
         fi
 
     done
