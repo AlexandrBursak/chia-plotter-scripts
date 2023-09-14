@@ -32,6 +32,8 @@ get_free_space() {
 
 # Start unlimit loop
 count_total=0
+copied=0
+removed=0
 action_on_plot=false
 keep_going_proccessing=true
 while $keep_going_proccessing; do
@@ -43,7 +45,8 @@ while $keep_going_proccessing; do
 
             # Get the basename of file
             file_name=$(basename "$file")
-            echo "Cycle #$count_total; Start working with new plot: $file_name"
+            echo "---------- Cycle #$count_total --------------"
+            echo "Start working with new plot: $file_name"
 
             # Create a log file
             logs_file="$path_logs/$file_name.log"
