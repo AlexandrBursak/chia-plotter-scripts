@@ -31,18 +31,21 @@ get_free_space() {
 }
 
 # Start unlimit loop
-count=0
+count_total=0
+copied=0
+removed=0
 action_on_plot=false
 while true; do
     # Search the files ".plot" in the temporary fast disk
     for file in "$source_dir"/*.plot; do
         if [ -e "$file" ]; then
-            count=$((count + 1))
+            count_total=$((count_total + 1))
             start_time=$(date +%s)
 
             # Get the basename of file
             file_name=$(basename "$file")
-            echo "Cycle #$count; Start working with new plot: $file_name"
+            echo "---------- Cycle #$count_total --------------"
+            echo "Start working with new plot: $file_name"
 
             # Create a log file
             logs_file="$path_logs/$file_name.log"
@@ -88,14 +91,17 @@ while true; do
 
             if [[ "$action_on_plot" == true ]]; then
               echo "Moved file: $file into $current_path."
+              copied=$((copied + 1))
             else
               echo "Removed file: $file, because $first_digit < $min_allowed_proofs."
+              removed=$((removed + 1))
             fi
 
             end_time=$(date +%s)
             elapsed_time=$((end_time - start_time))
 
-            echo "========== #$count === $first_digit_with_profs; === FINISHED in $elapsed_time s.==============="
+            echo "Statistics: copied=$copied removed=$removed"
+            echo "========== #$count_total === $first_digit_with_profs; === FINISHED in $elapsed_time s.==============="
         fi
 
     done
