@@ -5,6 +5,7 @@ pool_contract_address=$CHIA_POOL_CONTRCT_ADDRESS
 
 fast_disk_dir="/mnt/Fast-disk/chia-plotter/plotting/"
 
+path_to_bladebit_cuda="/home/burik/plotter/bladebit_cuda/bladebit_cuda"
 path_to_bladebit="/home/burik/plotter/bladebit_cuda/bladebit_cuda"
 
 # set all core/threads of processor
@@ -30,6 +31,7 @@ get_free_space() {
 
 plot_size=85195312 # for compress type 5
 
+type_plotting="cudaplot"
 number_plots=200 # number plats that we want to plot
 compress=7 # compress level
 counter=1 
@@ -57,15 +59,37 @@ do
     echo $counter
 
 # run the blidebit script
+if [[ "$type_plotting" == 'cudaplot' ]]; then
+$path_to_bladebit_cuda \
+    -f $farm_key \
+    -c $pool_contract_address \
+    -z $compress \
+    -n 1 \
+    $type_plotting \
+    $fast_disk_dir \
+    /
+elif [[ "$type_plotting" == 'ramplot' ]]; then
 $path_to_bladebit \
     -t $number_threads \
     -f $farm_key \
     -c $pool_contract_address \
     -z $compress \
     -n 1 \
-    cudaplot \
+    $type_plotting \
     $fast_disk_dir \
     /
+else
+$path_to_bladebit \
+    -t $number_threads \
+    -f $farm_key \
+    -c $pool_contract_address \
+    -z $compress \
+    -n 1 \
+    -t1 <temp_directory> \
+    $type_plotting \
+    $fast_disk_dir \
+    /
+fi
 
     ((counter++))
 

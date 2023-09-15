@@ -40,7 +40,7 @@ while $keep_going_proccessing; do
     # Search the files ".plot" in the temporary fast disk
     for file in "$source_dir"/*.plot; do
         if [ -e "$file" ]; then
-            count_total=$((count_total + 1))
+            ((count_total++))
             start_time=$(date +%s)
 
             # Get the basename of file
@@ -98,10 +98,10 @@ while $keep_going_proccessing; do
                 rm $file
                 if [[ "$action_on_plot" == true ]]; then
                   echo "Moved file: $file into $current_path."
-                  copied=$((copied + 1))
+                  ((copied++))
                 else
                   echo "Removed file: $file, because $first_digit < $min_allowed_proofs."
-                  removed=$((removed + 1))
+                  ((removed++))
                 fi
             else
                 echo "Not enough space for moving a plot"
