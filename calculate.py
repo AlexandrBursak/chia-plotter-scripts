@@ -1,16 +1,15 @@
 import math
 
 plot_size = {
-	'C5': 85195312, # round to bigger size
+        'C5': 85161440,
 	'C6': 83486720, # round to bigger size
-	'C7': 81816406, # round to bigger size
+	'C7': 81794364,
 }
 
 bigger_plots = 'C5'
 smaller_plots = 'C7'
 smaller, bigger = plot_size[smaller_plots], plot_size[bigger_plots]
-#merge=bigger-smaller
-merge=3000000
+merge=3350000 # can be set to a more suitable size
 
 disk_sizes = {
 	'4tb':   3907018584,
@@ -63,26 +62,26 @@ for size in disk_sizes:
 	print('=============== End cycle ===============')
 
 # ----- Disk size: 4tb == 3907018584 -----
-# Used space < total space == 3905468728 < 3907018584  Free space ± 1549856
+# Used space < total space == 3903957936 < 3907018584  Free space ± 3060648
 # For 4tb: C5 - 42, C7 - 4
 # =============== End cycle ===============
 # ----- Disk size: 8tb == 7814026584 -----
-# Used space < total space == 7810937456 < 7814026584  Free space ± 3089128
-# For 8tb: C5 - 84, C7 - 8
+# Used space < total space == 7811282948 < 7814026584  Free space ± 2743636
+# For 8tb: C5 - 85, C7 - 7
 # =============== End cycle ===============
 # ----- Disk size: 10tb == 9766436864 -----
-# Used space < total space == 9763671820 < 9766436864  Free space ± 2765044
-# For 10tb: C5 - 105, C7 - 10
+# Used space < total space == 9763261916 < 9766436864  Free space ± 3174948
+# For 10tb: C5 - 106, C7 - 9
 # =============== End cycle ===============
 # ----- Disk size: 12tb == 11718523904 -----
-# Used space < total space == 11716406184 < 11718523904  Free space ± 2117720
-# For 12tb: C5 - 126, C7 - 12
+# Used space < total space == 11715240884 < 11718523904  Free space ± 3283020
+# For 12tb: C5 - 127, C7 - 11
 # =============== End cycle ===============
 # ----- Disk size: 14tb == 13671961600 -----
-# Used space < total space == 13669140548 < 13671961600  Free space ± 2821052
-# For 14tb: C5 - 147, C7 - 14
+# Used space < total space == 13670586928 < 13671961600  Free space ± 1374672
+# For 14tb: C5 - 149, C7 - 12
 # =============== End cycle ===============
 # ----- Disk size: 16tb == 15625879552 -----
-# Used space < total space == 15625253818 < 15625879552  Free space ± 625734
-# For 16tb: C5 - 169, C7 - 15
+# Used space < total space == 15622565896 < 15625879552  Free space ± 3313656
+# For 16tb: C5 - 170, C7 - 14
 # =============== End cycle ===============

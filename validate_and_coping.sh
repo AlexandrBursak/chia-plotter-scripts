@@ -37,6 +37,7 @@ copied=0
 removed=0
 action_on_plot=false
 keep_going_proccessing=true
+reload_process=false
 while $keep_going_proccessing; do
     # Search the files ".plot" in the temporary fast disk
     for file in "$source_dir"/*.plot; do
@@ -46,7 +47,7 @@ while $keep_going_proccessing; do
 
             # Get the basename of file
             file_name=$(basename "$file")
-            echo "---------- Cycle #$count_total --------------"
+            echo "---------- Cycle #$count_total --- Date start: $(date -d @$start_time) -----------"
             echo "Start working with new plot: $file_name"
 
             # Create a log file
@@ -66,8 +67,15 @@ while $keep_going_proccessing; do
                 echo "$first_digit_with_profs for current file"
                 first_digit=$(echo "$first_digit_with_profs" | grep -oP '(\d+)')
                 break
+              # elif [[ "$line" =~ 'app.asar.unpacked' ]]; then
+              #   echo "Something went wrong! Let's start again :)"
+              #   break
               fi
             done < <(tail -f "$logs_file")
+
+            validate_time=$(date +%s)
+            elapsed_time=$((validate_time - start_time))
+            echo "Validate time: $elapsed_time s."
 
             # if Proofs is less than required then the plot file doesn't copy to the final destination
             if [ $first_digit -lt $min_allowed_proofs ]; then
@@ -82,7 +90,7 @@ while $keep_going_proccessing; do
                         keep_going_proccessing=true
                         break
                     else
-                        keep_going_proccessing=false
+                        reload_process=true
                     fi
                 done
                 if [[ "$keep_going_proccessing" == true ]]; then
@@ -104,6 +112,9 @@ while $keep_going_proccessing; do
                   echo "Removed file: $file, because $first_digit < $min_allowed_proofs."
                   ((removed++))
                 fi
+                moving_time=$(date +%s)
+                elapsed_time=$((moving_time - validate_time))
+                echo "Spend time: $elapsed_time s."
             else
                 echo "Not enough space for moving a plot"
             fi
@@ -113,6 +124,7 @@ while $keep_going_proccessing; do
 
             echo "Statistics: copied=$copied removed=$removed"
             echo "========== #$count_total === $first_digit_with_profs; === FINISHED in $elapsed_time s.==============="
+            echo " "
 
             if [[ "$keep_going_proccessing" == false ]]; then
                 break
