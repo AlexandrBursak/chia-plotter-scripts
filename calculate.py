@@ -9,7 +9,8 @@ plot_size = {
 bigger_plots = 'C5'
 smaller_plots = 'C7'
 smaller, bigger = plot_size[smaller_plots], plot_size[bigger_plots]
-merge=bigger-smaller
+#merge=bigger-smaller
+merge=3000000
 
 disk_sizes = {
 	'4tb':   3907018584,

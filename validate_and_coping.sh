@@ -2,13 +2,14 @@
 
 # Temporary fast disk
 source_dir="/mnt/Fast-disk/chia-plotter/plotting"
+#source_dir="/mnt/trash-store/C7"
 
 # Log files
 logs_file=""
 path_logs="validation_logs"
 
 # Folders, where should be stored the plots
-path_array=("/mnt/InPl12Tb/Plots" "/mnt/InPl14Tb-2/Plots")
+path_array=("/mnt/InPl14Tb-2/Plots" "/mnt/InPl12Tb/Plots")
 
 plot_size=85195312 # for compress type 5
 
