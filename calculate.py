@@ -11,7 +11,7 @@ plot_size = {
 }
 
 bigger_plots = 'C5'
-smaller_plots = 'C6'
+smaller_plots = 'C7'
 smaller, bigger = plot_size[smaller_plots], plot_size[bigger_plots]
 merge=3350000 # can be set to a more suitable size
 
