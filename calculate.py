@@ -1,23 +1,31 @@
 import math
 
 plot_size = {
-        'C5': 85161440,
-	'C6': 83486720, # round to bigger size
-	'C7': 81794364,
+	'C1': 91750400, # 87.5
+	'C2': 90177536, # 86.0
+	'C3': 88604672, # 84.5
+	'C4': 86926951, # 82.9
+        'C5': 85161440, # 81.3
+	'C6': 83486720, # 79.6
+	'C7': 81794364, # 78.0
 }
 
 bigger_plots = 'C5'
-smaller_plots = 'C7'
+smaller_plots = 'C6'
 smaller, bigger = plot_size[smaller_plots], plot_size[bigger_plots]
 merge=3350000 # can be set to a more suitable size
 
-disk_sizes = {
+disk_sizes = { 
 	'4tb':   3907018584,
+	'6tb':   5859376921, # 5,45697
 	'8tb':   7814026584,
 	'10tb':  9766436864,
 	'12tb': 11718523904,
 	'14tb': 13671961600,
 	'16tb': 15625879552,
+	'18tb': 17578130764, # 16,37091
+	'20tb': 19531256404, # 18,1899
+	'20tb': 21484382045, # 20,00889
 }
 
 
