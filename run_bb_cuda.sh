@@ -5,7 +5,8 @@ pool_contract_address=$CHIA_POOL_CONTRCT_ADDRESS
 
 fast_disk_dir="/mnt/Fast-disk/chia-plotter/plotting/"
 
-path_to_bladebit_cuda="/home/burik/plotter/bladebit_cuda/bladebit_cuda"
+#path_to_bladebit_cuda="/home/burik/plotter/bladebit_cuda/bladebit_cuda"
+path_to_bladebit_cuda="/home/burik/plotter/bladebit/build/bladebit_cuda"
 path_to_bladebit="/home/burik/plotter/bladebit_cuda/bladebit_cuda"
 
 # set all core/threads of processor
@@ -64,9 +65,10 @@ $path_to_bladebit_cuda \
     -t $number_threads \
     -f $farm_key \
     -c $pool_contract_address \
-    -z $compress \
+    --compress $compress \
     -n 1 \
     $type_plotting \
+    --check 100 --check-threshold 0.9 \
     $fast_disk_dir \
     /
 elif [[ "$type_plotting" == 'ramplot' ]]; then
@@ -93,7 +95,7 @@ $path_to_bladebit \
 fi
 
     ((counter++))
-
-    sleep 60
+    echo "Paused to 10s"
+    sleep 10
 done
 echo All done

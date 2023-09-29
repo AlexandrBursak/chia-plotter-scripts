@@ -51,37 +51,38 @@ while $keep_going_proccessing; do
             echo "Start working with new plot: $file_name"
 
             # Create a log file
-            logs_file="$path_logs/$file_name.log"
-            echo "Create log file $logs_file"
-            touch "$logs_file"
+            # logs_file="$path_logs/$file_name.log"
+            # echo "Create log file $logs_file"
+            # touch "$logs_file"
 
-            echo "Start validation of plot"
+            # echo "Start validation of plot"
             # Start the chia plot validation and store result to log file
-            chia plots check -n $count_validation -g $file  > "$logs_file" 2>&1 &
+            # chia plots check -n $count_validation -g $file  > "$logs_file" 2>&1 &
 
             # Analyze the log file for Proofs value
-            while read -r line
-            do
-              if [[ $line =~ "Proofs" ]]; then
-                first_digit_with_profs=$(echo "$line" | grep -oPm1 'Proofs (\d+)')
-                echo "$first_digit_with_profs for current file"
-                first_digit=$(echo "$first_digit_with_profs" | grep -oP '(\d+)')
-                break
+            # while read -r line
+            # do
+            #  if [[ $line =~ "Proofs" ]]; then
+            #    first_digit_with_profs=$(echo "$line" | grep -oPm1 'Proofs (\d+)')
+            #    echo "$first_digit_with_profs for current file"
+            #    first_digit=$(echo "$first_digit_with_profs" | grep -oP '(\d+)')
+            #    break
               # elif [[ "$line" =~ 'app.asar.unpacked' ]]; then
               #   echo "Something went wrong! Let's start again :)"
               #   break
-              fi
-            done < <(tail -f "$logs_file")
+            #  fi
+            # done < <(tail -f "$logs_file")
 
-            validate_time=$(date +%s)
-            elapsed_time=$((validate_time - start_time))
-            echo "Validate time: $elapsed_time s."
+            # validate_time=$(date +%s)
+            # elapsed_time=$((validate_time - start_time))
+            # echo "Validate time: $elapsed_time s."
 
             # if Proofs is less than required then the plot file doesn't copy to the final destination
-            if [ $first_digit -lt $min_allowed_proofs ]; then
-                action_on_plot=false
-                keep_going_proccessing=true
-            else
+            # if [ $first_digit -lt $min_allowed_proofs ]; then
+            #    action_on_plot=false
+            #    keep_going_proccessing=true
+            #else
+	    keep_going_proccessing=false
                 # Get the free space destination place
                 for current_path in ${path_array[@]}; do
                     get_free_space "$current_path"
@@ -100,21 +101,21 @@ while $keep_going_proccessing; do
                     # Copy the file to the destination dir
                     pv "$source_dir/$file_name" > "$current_path/$file_name"
                 fi
-            fi
+            #fi
 
             if [[ "$keep_going_proccessing" == true ]]; then
                 # Remove the file from the temporary fast disk
                 rm $file
-                if [[ "$action_on_plot" == true ]]; then
+                #if [[ "$action_on_plot" == true ]]; then
                   echo "Moved file: $file into $current_path."
                   ((copied++))
-                else
-                  echo "Removed file: $file, because $first_digit < $min_allowed_proofs."
-                  ((removed++))
-                fi
-                moving_time=$(date +%s)
-                elapsed_time=$((moving_time - validate_time))
-                echo "Spend time: $elapsed_time s."
+                #else
+                #  echo "Removed file: $fiile, because $first_digit < $min_allowed_proofs."
+                #  ((removed++))
+                #fi
+                #moving_time=$(date +%s)
+                #elapsed_time=$((moving_time - start_time))
+                #echo "Spend time: $elapsed_time s."
             else
                 echo "Not enough space for moving a plot"
             fi
@@ -122,8 +123,10 @@ while $keep_going_proccessing; do
             end_time=$(date +%s)
             elapsed_time=$((end_time - start_time))
 
-            echo "Statistics: copied=$copied removed=$removed"
-            echo "========== #$count_total === $first_digit_with_profs; === FINISHED in $elapsed_time s.==============="
+            # echo "Statistics: copied=$copied removed=$removed"
+            echo "Statistics: copied=$copied"
+            # echo "========== #$count_total === $first_digit_with_profs; === FINISHED in $elapsed_time s.==============="
+            echo "========== #$count_total === FINISHED in $elapsed_time s.==============="
             echo " "
 
             if [[ "$keep_going_proccessing" == false ]]; then
