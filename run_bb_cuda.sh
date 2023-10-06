@@ -87,6 +87,7 @@ $path_to_bladebit_cuda \
     -z $compress \
     -n 1 \
     $type_plotting \
+    --check 100 --check-threshold 0.9 \
     $fast_disk_dir \
     | tee "$logs_file" 2>&1 \
     /
