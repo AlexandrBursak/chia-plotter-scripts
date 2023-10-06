@@ -8,7 +8,7 @@ source_dir="/mnt/Fast-disk/chia-plotter/plotting"
 logs_file=""
 
 # Folders, where should be stored the plots
-path_array=("/mnt/InPl14Tb-2/Plots" "/mnt/InPl12Tb/Plots")
+path_array=("/mnt/InPl14Tb/Plots" "/mnt/InPl12Tb/Plots")
 
 plot_size=85195312 # for compress type 5
 
