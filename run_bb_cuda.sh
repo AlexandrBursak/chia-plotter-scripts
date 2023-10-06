@@ -8,9 +8,6 @@ fast_disk_dir="/mnt/Fast-disk/chia-plotter/plotting/"
 path_to_bladebit_cuda="/home/burik/plotter/bladebit_cuda/bladebit_cuda"
 path_to_bladebit="/home/burik/plotter/bladebit_cuda/bladebit_cuda"
 
-logs_file=""
-path_logs="plotting_logs"
-
 # set all core/threads of processor
 number_threads=$(nproc --all)
 
@@ -56,11 +53,6 @@ do
 
     echo "---------- Cycle #$counter --- Date start: $(date -d @$start_time) -----------"
 
-    # Create a log file
-    logs_file="$path_logs/$start_time-$counter.log"
-    echo "Create log file $logs_file"
-    touch "$logs_file"
-
     # Check where is anough free space
     for current_path in ${path_array[@]}; do
         # get free space
@@ -88,7 +80,6 @@ $path_to_bladebit_cuda \
     -n 1 \
     $type_plotting \
     $fast_disk_dir \
-    | tee "$logs_file" 2>&1 \
     /
 elif [[ "$type_plotting" == 'ramplot' ]]; then
 $path_to_bladebit \
@@ -100,7 +91,6 @@ $path_to_bladebit \
     $type_plotting \
     --check 100 --check-threshold 0.9 \
     $fast_disk_dir \
-    | tee "$logs_file" 2>&1 \
     /
 else
 $path_to_bladebit \
@@ -113,7 +103,6 @@ $path_to_bladebit \
     $type_plotting \
     --check 100 --check-threshold 0.9 \
     $fast_disk_dir \
-    | tee "$logs_file" 2>&1 \
     /
 fi
 
